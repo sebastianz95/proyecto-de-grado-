@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventa — Gestión de Inventario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/styles.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════
+       MODAL AUTENTICACIÓN
+  ══════════════════════════════════ -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+
+      <div class="modal-logo">
+        <div class="modal-logo-icon">📦</div>
+        <span class="modal-logo-text">INVENTA</span>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="modal-tab active" onclick="switchTab('login')">Iniciar sesión</button>
+        <button class="modal-tab" onclick="switchTab('register')">Registrarse</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="modal-form" id="login-form">
+  <div class="form-group">
+    <label>Correo electrónico</label>
+    <input type="email" id="loginEmail" placeholder="usuario@empresa.com">
+  </div>
+
+  <div class="form-group">
+    <label>Contraseña</label>
+    <input type="password" id="loginPassword" placeholder="••••••••">
+  </div>
+
+ <button class="btn-modal" onclick="goToLogin()">
+  Iniciar sesión →
+</button>
+
+
+  <p class="modal-footer">
+    <a href="#" onclick="resetPassword()">¿Olvidaste tu contraseña?</a>
+  </p>
+</div>
+      <!-- REGISTER -->
+      <div class="modal-form" id="register-form" style="display:none">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label>Empresa</label>
+          <input type="text" placeholder="Nombre de tu empresa">
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" placeholder="usuario@empresa.com">
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" placeholder="Mínimo 8 caracteres">
+        </div>
+        <button class="btn-modal" onclick="showToast('¡Cuenta creada!', 'Revisa tu correo para confirmar.')">
+          Crear cuenta →
+        </button>
+        <p class="modal-footer">Al registrarte aceptas nuestros <a href="#">términos de uso</a></p>
+      </div>
+      <div class="divider">
+    <span>o</span>
+</div>
+
+<button class="google-btn">
+    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+    Continuar con Google
+</button>
+    </div>
+  </div>
+
+
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-msg" id="toast-msg"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════ -->
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">📦</div>
+      INVENTA
+    </div>
+    <ul>
+      <li><a href="#about">Nosotros</a></li>
+      <li><a href="#services">Servicios</a></li>
+      <li><a href="#contact">Contacto</a></li>
+    </ul>
+    <div class="nav-btns">
+      <a class="btn-outline" onclick="openModal('login')">Iniciar sesión</a>
+      <a class="btn-filled" onclick="openModal('register')">Registrarse</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid">
+      <div>
+        <span class="hero-tag">▸ Sistema de gestión de inventario</span>
+        <h1>Controla tu inventario con <span class="blue">precisión total</span></h1>
+        <p class="hero-sub">
+          Inventa te da visibilidad completa sobre tus productos, stock y movimientos
+          en tiempo real. Diseñado para negocios colombianos que quieren crecer.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-filled btn-lg" onclick="openModal('register')">Comenzar gratis</button>
+          <a href="#services" class="btn-outline btn-lg">Ver funciones →</a>
+        </div>
+      </div>
+
+      <!-- Dashboard Mockup -->
+      <div class="hero-visual">
+        <div class="dash-mock">
+          <div class="dash-header">
+            <div class="dash-dot" style="background:#ff5f57"></div>
+            <div class="dash-dot" style="background:#ffc027; margin-left:4px"></div>
+            <div class="dash-dot" style="background:#29c940; margin-left:4px"></div>
+            <span class="dash-title">INVENTA — Dashboard</span>
+          </div>
+          <div class="dash-body">
+            <div class="dash-label">▸ Resumen general</div>
+            <div class="dash-cards">
+              <div class="dash-card">
+                <div class="dash-card-label">Total Productos</div>
+                <div class="dash-card-value">34,534</div>
+              </div>
+              <div class="dash-card">
+                <div class="dash-card-label">Ventas</div>
+                <div class="dash-card-value">$20,238</div>
+              </div>
+              <div class="dash-card">
+                <div class="dash-card-label">Proveedores</div>
+                <div class="dash-card-value">8,944</div>
+              </div>
+            </div>
+            <div class="dash-table">
+              <div class="dash-table-header">
+                <span>Producto</span>
+                <span>Stock</span>
+                <span>Estado</span>
+              </div>
+              <div class="dash-table-row">
+                <span>Laptop HP 15"</span><span>142</span>
+                <span><span class="stock-badge stock-ok">OK</span></span>
+              </div>
+              <div class="dash-table-row">
+                <span>Monitor LG 24"</span><span>8</span>
+                <span><span class="stock-badge stock-low">Bajo</span></span>
+              </div>
+              <div class="dash-table-row">
+                <span>Teclado Mecánico</span><span>0</span>
+                <span><span class="stock-badge stock-out">Agotado</span></span>
+              </div>
+              <div class="dash-table-row">
+                <span>Mouse Inalámbrico</span><span>237</span>
+                <span><span class="stock-badge stock-ok">OK</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       STATS
+  ══════════════════════════════════ -->
+  <div id="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-num">+500</div>
+        <div class="stat-label">Empresas activas</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">2M+</div>
+        <div class="stat-label">Productos gestionados</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">99.9%</div>
+        <div class="stat-label">Disponibilidad</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Soporte técnico</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       QUIÉNES SOMOS
+  ══════════════════════════════════ -->
+  <section id="about">
+    <div class="section-inner about-grid">
+      <div class="about-text reveal">
+        <span class="section-tag">▸ Quiénes somos</span>
+        <h2>La solución colombiana para gestión de inventario</h2>
+        <p>
+          Inventa nació en Colombia para resolver los retos reales del comercio local.
+          Sabemos lo que significa perder ventas por descontrol de stock, o tomar
+          decisiones sin datos confiables.
+        </p>
+        <p>
+          Somos un equipo de ingenieros y empresarios que construyeron la plataforma
+          que ellos mismos necesitaban: simple, poderosa y adaptada a la realidad
+          del mercado colombiano.
+        </p>
+        <div class="features-list">
+          <div class="feature-item">
+            <span class="feature-icon">▸</span>
+            <span>Seguimiento de stock en tiempo real para cualquier tipo de producto</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">▸</span>
+            <span>Alertas automáticas de inventario bajo o agotado</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">▸</span>
+            <span>Integración con tus proveedores y canales de venta</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">▸</span>
+            <span>Reportes detallados para tomar decisiones con datos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-panels reveal">
+        <div class="about-panel">
+          <h4>🎯 Nuestra misión</h4>
+          <p>Dar a cada negocio colombiano, sin importar su tamaño, la capacidad de
+          gestionar su inventario como una gran empresa, con tecnología accesible y soporte local.</p>
+        </div>
+        <div class="about-panel">
+          <h4>⚡ Por qué Inventa</h4>
+          <p>No somos un software genérico adaptado. Fuimos construidos desde cero
+          pensando en las necesidades reales de distribuidores, tiendas y negocios de Colombia.</p>
+        </div>
+        <div class="about-panel">
+          <h4>🔒 Seguridad y confiabilidad</h4>
+          <p>Tus datos están protegidos con cifrado de nivel bancario, copias de seguridad
+          automáticas y una infraestructura con 99.9% de disponibilidad garantizada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       SERVICIOS
+  ══════════════════════════════════ -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="services-head reveal">
+        <span class="section-tag">▸ Nuestros servicios</span>
+        <h2>Todo lo que necesitas para gestionar tu inventario</h2>
+        <p>Herramientas diseñadas para cualquier tipo de producto y cualquier tamaño de negocio.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">📦</div>
+          <div class="service-title">Control de Stock</div>
+          <div class="service-desc">Registra entradas y salidas de cualquier producto con precisión.
+          Consulta el estado de tu inventario en tiempo real desde cualquier dispositivo.</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🔔</div>
+          <div class="service-title">Alertas Inteligentes</div>
+          <div class="service-desc">Recibe notificaciones automáticas cuando un producto esté por agotarse.
+          Nunca más pierdas una venta por falta de stock.</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">📊</div>
+          <div class="service-title">Reportes y Analítica</div>
+          <div class="service-desc">Dashboards en tiempo real con datos de ventas, rotación de productos
+          y tendencias para tomar decisiones inteligentes.</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🚚</div>
+          <div class="service-title">Gestión de Proveedores</div>
+          <div class="service-desc">Administra tus proveedores, genera órdenes de compra y realiza
+          seguimiento de entregas desde un solo lugar.</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🏪</div>
+          <div class="service-title">Multi-bodega</div>
+          <div class="service-desc">Gestiona el inventario de múltiples bodegas, tiendas o puntos
+          de venta de forma centralizada y sincronizada.</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">🔗</div>
+          <div class="service-title">Integraciones</div>
+          <div class="service-desc">Conecta Inventa con tu tienda online, sistema de facturación
+          electrónica y herramientas de venta que ya usas.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CONTACTO
+  ══════════════════════════════════ -->
+  <section id="contact">
+    <div class="section-inner contact-grid">
+      <div class="contact-info reveal">
+        <span class="section-tag">▸ Contáctanos</span>
+        <h2>¿Listo para ordenar tu inventario?</h2>
+        <p>Escríbenos y uno de nuestros asesores colombianos te contactará en menos de
+        24 horas para mostrarte cómo Inventa puede ayudar a tu negocio.</p>
+
+        <div class="contact-detail">
+          <span class="icon">📧</span>
+          <span>hola@inventa.com.co</span>
+        </div>
+        <div class="contact-detail">
+          <span class="icon">📞</span>
+          <span>+57 (315) 859-4567</span>
+        </div>
+        <div class="contact-detail">
+          <span class="icon">📍</span>
+          <span>Colombia</span>
+        </div>
+        <div class="contact-detail">
+          <span class="icon">🕐</span>
+          <span>Lunes – Viernes, 8am – 6pm COT</span>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label>Empresa</label>
+            <input type="text" placeholder="Tu empresa">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" placeholder="correo@empresa.com">
+        </div>
+        <div class="form-group">
+          <label>Teléfono (opcional)</label>
+          <input type="tel" placeholder="+57 300 000 0000">
+        </div>
+        <div class="form-group">
+          <label>¿Cómo podemos ayudarte?</label>
+          <textarea placeholder="Cuéntanos sobre tu negocio y el tipo de inventario que manejas..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="showToast('¡Mensaje enviado!', 'Te contactaremos pronto desde Colombia.')">
+          Enviar mensaje →
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer>
+    <div class="logo" style="font-size:1.3rem">
+      <div class="logo-icon" style="width:22px;height:22px;font-size:0.7rem">📦</div>
+      INVENTA
+    </div>
+    <div class="footer-copy">© 2025 Inventa — Colombia. Todos los derechos reservados.</div>
+    <div class="footer-links">
+      <a href="#">Privacidad</a>
+      <a href="#">Términos</a>
+      <a href="#contact">Contacto</a>
+    </div>
+  </footer>
+<!-- Firebase -->
+<script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+
+  <script src="/javascript/main.js"></script>
+</body>
+</html>
