@@ -3,6 +3,8 @@ import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
+import LandingPage from "./pages/LandingPage"; // <--- Importa tu Landing
+import ForgotPassword from "./pages/ForgotPassword"; // <--- Importa tu recuperación
 import Dashboard from "./pages/Dashboard";
 import Inventario from "./pages/Inventario";
 import Ordenes from "./pages/Ordenes";
@@ -16,9 +18,16 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/"      element={<Navigate to="/login" replace />} />
+          {/* 1. La Landing es ahora la entrada principal */}
+          <Route path="/" element={<LandingPage />} />
+          
+          {/* 2. Rutas Públicas */}
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+          <Route path="/restablecer" element={<ForgotPassword />} />
+
+          {/* 3. Rutas Privadas (Requieren Login) */}
+          <Route path="/app" element={<PrivateRoute><Layout /></PrivateRoute>}>
+            <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard"      element={<Dashboard />} />
             <Route path="inventario"     element={<Inventario />} />
             <Route path="ordenes"        element={<Ordenes />} />
@@ -26,6 +35,9 @@ export default function App() {
             <Route path="reportes"       element={<Reportes />} />
             <Route path="configuracion"  element={<Configuracion />} />
           </Route>
+
+          {/* Redirección por si entran a una ruta que no existe */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

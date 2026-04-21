@@ -1,4 +1,8 @@
 /* ===== RESET ===== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -137,4 +141,16 @@ input[type="email"] {
   input[type="email"] {
     width: 100%;
   }
+}
+
+/* Fuerza a que el contenido principal sea nítido */
+.main-content {
+  color: #1b3c59; /* Color oscuro para que se vea sobre fondo claro */
+}
+
+/* Si tu inventario es de modo oscuro, usa este: */
+/* .main-content { color: #ffffff; } */
+
+.main-content td, .main-content th {
+  opacity: 1 !important; /* Elimina cualquier opacidad heredada */
 }

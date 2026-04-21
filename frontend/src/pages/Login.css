@@ -15,3 +15,29 @@
 .login-back { text-align:center; margin-top:18px; font-size:13px; }
 .login-back a { color:#888; text-decoration:none; }
 .login-back a:hover { color:#1e90ff; }
+
+.login-footer-links {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #7a8a9e;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.link-btn:hover {
+  color: #1e90ff;
+}
+
+.link-btn.back {
+  font-size: 11px;
+  margin-top: 5px;
+}
