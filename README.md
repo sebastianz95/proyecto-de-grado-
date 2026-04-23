@@ -19,6 +19,6 @@ npm install
 npm run dev
 ```
 
-Abre http://localhost:3000 → usuario: `admin` / contraseña: `admin123`
+Abre http://localhost:3000 
 
 Ver README dentro de cada carpeta para instrucciones detalladas.
