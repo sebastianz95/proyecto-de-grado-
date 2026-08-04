@@ -14,65 +14,83 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/productos")
-@CrossOrigin(origins = {"http://localhost:3000","http://localhost:5173"})
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:5173" })
 public class ProductoController {
 
-    @Autowired private ProductoRepository  productoRepo;
-    @Autowired private CategoriaRepository categoriaRepo;
-    @Autowired private ProveedorRepository proveedorRepo;
+    @Autowired
+    private ProductoRepository productoRepo;
+    @Autowired
+    private CategoriaRepository categoriaRepo;
+    @Autowired
+    private ProveedorRepository proveedorRepo;
 
     @GetMapping
-    public List<Map<String,Object>> listar() {
+    public List<Map<String, Object>> listar() {
         return productoRepo.findAll().stream().map(this::toMap).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> obtener(@PathVariable Integer id) {
-        return productoRepo.findById(id).map(p -> ResponseEntity.ok(toMap(p)))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Map<String,Object> body) {
-        return ResponseEntity.ok(toMap(productoRepo.save(fromMap(body, new Producto()))));
+    public ResponseEntity<?> crear(@RequestBody Map<String, Object> body) {
+        try {
+            Producto nuevo = fromMap(body, new Producto());
+            return ResponseEntity.ok(toMap(productoRepo.save(nuevo)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody Map<String,Object> body) {
-        return productoRepo.findById(id).map(p -> ResponseEntity.ok(toMap(productoRepo.save(fromMap(body, p)))))
+    public ResponseEntity<?> actualizar(@PathVariable Integer id, @RequestBody Map<String, Object> body) {
+        return productoRepo.findById(id)
+                .map(p -> ResponseEntity.ok(toMap(productoRepo.save(fromMap(body, p)))))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
-        if (!productoRepo.existsById(id)) return ResponseEntity.notFound().build();
         productoRepo.deleteById(id);
-        return ResponseEntity.ok(Map.of("mensaje","Producto eliminado"));
+        return ResponseEntity.ok(Map.of("mensaje", "Eliminado"));
     }
 
-    private Map<String,Object> toMap(Producto p) {
-        Map<String,Object> m = new LinkedHashMap<>();
-        m.put("idProducto",  p.getIdProducto());
-        m.put("nombre",      p.getNombre());
+    private Map<String, Object> toMap(Producto p) {
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("idProducto", p.getIdProducto());
+        m.put("nombre", p.getNombre());
         m.put("descripcion", p.getDescripcion() != null ? p.getDescripcion() : "");
-        m.put("precioCompra",p.getPrecioCompra());
+        m.put("precioCompra", p.getPrecioCompra());
         m.put("precioVenta", p.getPrecioVenta());
-        m.put("stock",       p.getStock() != null ? p.getStock() : 0);
+        m.put("stock", p.getStock());
+        m.put("tasaIva", p.getTasaIva() != null ? p.getTasaIva() : new BigDecimal("0.19"));
+        m.put("categoria", p.getCategoria() != null ? p.getCategoria().getNombre() : "N/A");
         m.put("idCategoria", p.getCategoria() != null ? p.getCategoria().getIdCategoria() : null);
-        m.put("categoria",   p.getCategoria() != null ? p.getCategoria().getNombre() : "");
+        m.put("proveedor", p.getProveedor() != null ? p.getProveedor().getNombre() : "N/A");
         m.put("idProveedor", p.getProveedor() != null ? p.getProveedor().getIdProveedor() : null);
-        m.put("proveedor",   p.getProveedor() != null ? p.getProveedor().getNombre() : "");
         return m;
     }
 
-    private Producto fromMap(Map<String,Object> b, Producto p) {
-        if (b.containsKey("nombre"))       p.setNombre((String) b.get("nombre"));
-        if (b.containsKey("descripcion"))  p.setDescripcion((String) b.get("descripcion"));
-        if (b.containsKey("precioVenta"))  p.setPrecioVenta(new BigDecimal(b.get("precioVenta").toString()));
-        if (b.containsKey("precioCompra")) p.setPrecioCompra(new BigDecimal(b.get("precioCompra").toString()));
-        if (b.containsKey("stock"))        p.setStock(Integer.valueOf(b.get("stock").toString()));
-        if (b.containsKey("idCategoria"))  categoriaRepo.findById(Integer.valueOf(b.get("idCategoria").toString())).ifPresent(p::setCategoria);
-        if (b.containsKey("idProveedor"))  proveedorRepo.findById(Integer.valueOf(b.get("idProveedor").toString())).ifPresent(p::setProveedor);
+    private Producto fromMap(Map<String, Object> b, Producto p) {
+        if (b.get("nombre") != null)
+            p.setNombre(b.get("nombre").toString());
+        if (b.get("descripcion") != null)
+            p.setDescripcion(b.get("descripcion").toString());
+        if (b.get("precioVenta") != null)
+            p.setPrecioVenta(new BigDecimal(b.get("precioVenta").toString()));
+        if (b.get("precioCompra") != null)
+            p.setPrecioCompra(new BigDecimal(b.get("precioCompra").toString()));
+        if (b.get("stock") != null)
+            p.setStock(Integer.valueOf(b.get("stock").toString()));
+
+        // Captura el IVA variable enviado desde React
+        if (b.get("tasaIva") != null) {
+            p.setTasaIva(new BigDecimal(b.get("tasaIva").toString()));
+        }
+
+        if (b.get("idCategoria") != null) {
+            categoriaRepo.findById(Integer.valueOf(b.get("idCategoria").toString())).ifPresent(p::setCategoria);
+        }
+        if (b.get("idProveedor") != null) {
+            proveedorRepo.findById(Integer.valueOf(b.get("idProveedor").toString())).ifPresent(p::setProveedor);
+        }
         return p;
     }
 }

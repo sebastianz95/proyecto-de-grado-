@@ -1,9 +1,9 @@
 package com.inventa.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "venta")
@@ -14,23 +14,24 @@ public class Venta {
     @Column(name = "id_venta")
     private Integer idVenta;
 
-    @Column(name = "fecha_venta")
+    @Column(name = "fecha_venta", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaVenta;
 
+    @Column(name = "total")
     private BigDecimal total;
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente")
+    @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    // Relación corregida para evitar el error de mappedBy
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_venta")
-    private List<DetalleVenta> detalles;
+    public Venta() {
+        this.fechaVenta = LocalDateTime.now();
+    }
 
     // --- GETTERS Y SETTERS ---
     public Integer getIdVenta() {
@@ -71,13 +72,5 @@ public class Venta {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public List<DetalleVenta> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetalleVenta> detalles) {
-        this.detalles = detalles;
     }
 }

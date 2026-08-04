@@ -1,0 +1,18 @@
+.facturacion-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.bg-white { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.bg-slate-50 { background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; }
+
+button { cursor: pointer; border: none; padding: 10px; border-radius: 5px; }
+.bg-blue-600 { background: #2563eb; color: white; }
+.bg-green-600 { background: #16a34a; color: white; width: 100%; font-weight: bold; font-size: 1.1rem; }

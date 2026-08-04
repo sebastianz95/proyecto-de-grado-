@@ -11,6 +11,10 @@ import Ordenes from "./pages/Ordenes";
 import Proveedores from "./pages/Proveedores";
 import Reportes from "./pages/Reportes";
 import Configuracion from "./pages/Configuracion";
+
+// --- 1. IMPORTA LA NUEVA PÁGINA ---
+import Facturacion from "./pages/Facturacion"; 
+
 import "./styles/global.css";
 
 export default function App() {
@@ -23,7 +27,6 @@ export default function App() {
           
           {/* 2. Rutas Públicas */}
           <Route path="/login" element={<Login />} />
-          {/* Cambiamos el path a /restablecer para que coincida con tu lógica */}
           <Route path="/restablecer" element={<ForgotPassword />} />
 
           {/* 3. Rutas Privadas (Protegidas por PrivateRoute) */}
@@ -31,6 +34,10 @@ export default function App() {
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard"      element={<Dashboard />} />
             <Route path="inventario"     element={<Inventario />} />
+            
+            {/* --- 2. NUEVA RUTA DE FACTURACIÓN AÑADIDA --- */}
+            <Route path="facturacion"    element={<Facturacion />} /> 
+            
             <Route path="ordenes"        element={<Ordenes />} />
             <Route path="proveedores"    element={<Proveedores />} />
             <Route path="reportes"       element={<Reportes />} />

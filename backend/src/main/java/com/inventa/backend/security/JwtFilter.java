@@ -20,20 +20,31 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req,
-                                    HttpServletResponse res,
-                                    FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws ServletException, IOException {
+
+        String path = req.getServletPath();
+
+        // Si la ruta es de registro o login, dejamos pasar sin validar token
+        if (path.startsWith("/api/auth/")) {
+            chain.doFilter(req, res);
+            return;
+        }
 
         String header = req.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
-            if (jwtUtil.esValido(token)) {
-                String username = jwtUtil.extraerUsername(token);
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
-                SecurityContextHolder.getContext().setAuthentication(auth);
+            try {
+                if (jwtUtil.esValido(token)) {
+                    String username = jwtUtil.extraerUsername(token);
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null,
+                            new ArrayList<>());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            } catch (Exception e) {
+                // Loguear error pero no bloquear el flujo aquí
+                System.out.println("JWT error: " + e.getMessage());
             }
         }
 

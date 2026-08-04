@@ -12,46 +12,98 @@ public class Producto {
     @Column(name = "id_producto")
     private Integer idProducto;
 
-    @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
-
-    @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(name = "precio_compra", nullable = false, precision = 10, scale = 2)
+    @Column(name = "precio_compra")
     private BigDecimal precioCompra;
 
-    @Column(name = "precio_venta", nullable = false, precision = 10, scale = 2)
+    @Column(name = "precio_venta")
     private BigDecimal precioVenta;
 
-    @Column(name = "stock")
-    private Integer stock = 0;
+    private Integer stock;
 
-    // Relación con Categoria — muchos productos pertenecen a una categoría
+    @Column(name = "tasa_iva", precision = 5, scale = 2)
+    private BigDecimal tasaIva = new BigDecimal("0.19");
+
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = false)
+    @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
-    // Relación con Proveedor — muchos productos tienen un proveedor
     @ManyToOne
-    @JoinColumn(name = "id_proveedor", nullable = false)
+    @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
 
-    // ── Getters y Setters ──
-    public Integer    getIdProducto()               { return idProducto;    }
-    public void       setIdProducto(Integer id)     { this.idProducto = id; }
-    public String     getNombre()                   { return nombre;        }
-    public void       setNombre(String n)           { this.nombre = n;      }
-    public String     getDescripcion()              { return descripcion;   }
-    public void       setDescripcion(String d)      { this.descripcion = d; }
-    public BigDecimal getPrecioCompra()             { return precioCompra;  }
-    public void       setPrecioCompra(BigDecimal p) { this.precioCompra = p;}
-    public BigDecimal getPrecioVenta()              { return precioVenta;   }
-    public void       setPrecioVenta(BigDecimal p)  { this.precioVenta = p; }
-    public Integer    getStock()                    { return stock;         }
-    public void       setStock(Integer s)           { this.stock = s;       }
-    public Categoria  getCategoria()                { return categoria;     }
-    public void       setCategoria(Categoria c)     { this.categoria = c;   }
-    public Proveedor  getProveedor()                { return proveedor;     }
-    public void       setProveedor(Proveedor p)     { this.proveedor = p;   }
+    // --- GETTERS Y SETTERS ---
+    public Integer getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public BigDecimal getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(BigDecimal precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+
+    public BigDecimal getPrecioVenta() {
+        return precioVenta;
+    }
+
+    public void setPrecioVenta(BigDecimal precioVenta) {
+        this.precioVenta = precioVenta;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public BigDecimal getTasaIva() {
+        return tasaIva;
+    }
+
+    public void setTasaIva(BigDecimal tasaIva) {
+        this.tasaIva = tasaIva;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
 }

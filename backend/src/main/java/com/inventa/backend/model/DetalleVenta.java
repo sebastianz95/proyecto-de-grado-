@@ -12,31 +12,184 @@ public class DetalleVenta {
     @Column(name = "id_detalle")
     private Integer idDetalle;
 
-    // Relación muchos detalles → una venta
-    @ManyToOne
-    @JoinColumn(name = "id_venta", nullable = false)
-    private Venta venta;
+    @Column(name = "id_venta")
+    private Integer idVenta;
 
-    // Relación muchos detalles → un producto
-    @ManyToOne
-    @JoinColumn(name = "id_producto", nullable = false)
-    private Producto producto;
+    @Column(name = "id_producto")
+    private Integer idProducto;
 
-    @Column(name = "cantidad", nullable = false)
-    private Integer cantidad;
+    @Column(name = "id_régimen") // Nota el acento, debe ser igual a la DB
+    private Integer idRegimen;
 
-    @Column(name = "subtotal", nullable = false, precision = 10, scale = 2)
+    private BigDecimal cantidad;
+
+    @Column(name = "precio_unitario")
+    private BigDecimal precioUnitario;
+
     private BigDecimal subtotal;
 
-    // ── Getters y Setters ──
-    public Integer    getIdDetalle()              { return idDetalle;     }
-    public void       setIdDetalle(Integer id)    { this.idDetalle = id;  }
-    public Venta      getVenta()                  { return venta;         }
-    public void       setVenta(Venta v)           { this.venta = v;       }
-    public Producto   getProducto()               { return producto;      }
-    public void       setProducto(Producto p)     { this.producto = p;    }
-    public Integer    getCantidad()               { return cantidad;      }
-    public void       setCantidad(Integer c)      { this.cantidad = c;    }
-    public BigDecimal getSubtotal()               { return subtotal;      }
-    public void       setSubtotal(BigDecimal s)   { this.subtotal = s;    }
+    @Column(name = "tasa_iva")
+    private BigDecimal tasaIva;
+
+    @Column(name = "monto_iva")
+    private BigDecimal montoIva;
+
+    private BigDecimal descuento = BigDecimal.ZERO;
+
+    @Column(name = "monto_descuento")
+    private BigDecimal montoDescuento = BigDecimal.ZERO;
+
+    @Column(name = "total_base")
+    private BigDecimal totalBase;
+
+    @Column(name = "total_iva")
+    private BigDecimal totalIva;
+
+    @Column(name = "total_descuento")
+    private BigDecimal totalDescuento = BigDecimal.ZERO;
+
+    @Column(name = "total_a_pagar") // Este era el error principal
+    private BigDecimal totalAPagar;
+
+    @Column(name = "id_factura")
+    private String idFactura;
+
+    private String estado;
+
+    // --- GETTERS Y SETTERS ---
+    public Integer getIdDetalle() {
+        return idDetalle;
+    }
+
+    public void setIdDetalle(Integer idDetalle) {
+        this.idDetalle = idDetalle;
+    }
+
+    public Integer getIdVenta() {
+        return idVenta;
+    }
+
+    public void setIdVenta(Integer idVenta) {
+        this.idVenta = idVenta;
+    }
+
+    public Integer getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public Integer getIdRegimen() {
+        return idRegimen;
+    }
+
+    public void setIdRegimen(Integer idRegimen) {
+        this.idRegimen = idRegimen;
+    }
+
+    public BigDecimal getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(BigDecimal cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public BigDecimal getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getTasaIva() {
+        return tasaIva;
+    }
+
+    public void setTasaIva(BigDecimal tasaIva) {
+        this.tasaIva = tasaIva;
+    }
+
+    public BigDecimal getMontoIva() {
+        return montoIva;
+    }
+
+    public void setMontoIva(BigDecimal montoIva) {
+        this.montoIva = montoIva;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public BigDecimal getMontoDescuento() {
+        return montoDescuento;
+    }
+
+    public void setMontoDescuento(BigDecimal montoDescuento) {
+        this.montoDescuento = montoDescuento;
+    }
+
+    public BigDecimal getTotalBase() {
+        return totalBase;
+    }
+
+    public void setTotalBase(BigDecimal totalBase) {
+        this.totalBase = totalBase;
+    }
+
+    public BigDecimal getTotalIva() {
+        return totalIva;
+    }
+
+    public void setTotalIva(BigDecimal totalIva) {
+        this.totalIva = totalIva;
+    }
+
+    public BigDecimal getTotalDescuento() {
+        return totalDescuento;
+    }
+
+    public void setTotalDescuento(BigDecimal totalDescuento) {
+        this.totalDescuento = totalDescuento;
+    }
+
+    public BigDecimal getTotalAPagar() {
+        return totalAPagar;
+    }
+
+    public void setTotalAPagar(BigDecimal totalAPagar) {
+        this.totalAPagar = totalAPagar;
+    }
+
+    public String getIdFactura() {
+        return idFactura;
+    }
+
+    public void setIdFactura(String idFactura) {
+        this.idFactura = idFactura;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }
