@@ -1,5 +1,6 @@
 package com.inventa.backend.service;
 
+import com.inventa.backend.dto.DetalleDTO;
 import com.inventa.backend.dto.VentaDTO;
 import com.inventa.backend.model.*;
 import com.inventa.backend.repository.*;
@@ -26,15 +27,16 @@ public class VentaService {
         // 1. Crear Cabecera de Venta
         Venta venta = new Venta();
         venta.setFechaVenta(LocalDateTime.now());
-        venta.setTotal(BigDecimal.valueOf(dto.getTotal()));
+        venta.setTotal(dto.getTotal()); // <-- CORREGIDO: Asignación directa de BigDecimal
         Venta guardada = ventaRepo.save(venta);
 
         String facturaNum = "FAC-" + System.currentTimeMillis();
 
         // 2. Procesar cada producto
-        for (VentaDTO.DetalleDTO det : dto.getDetalles()) {
-            Producto p = productoRepo.findById(det.getIdProducto().intValue())
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado ID: " + det.getIdProducto()));
+        // <-- CORREGIDO: Iterar directamente sobre DetalleDTO (clase independiente)
+        for (DetalleDTO det : dto.getDetalles()) {
+            Producto p = productoRepo.findById(det.getProductoId()) // <-- CORREGIDO: uso de getProductoId()
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado ID: " + det.getProductoId()));
 
             // Cálculos con IVA del producto (si es null usa 0.19 por defecto)
             BigDecimal cantidad = BigDecimal.valueOf(det.getCantidad());
